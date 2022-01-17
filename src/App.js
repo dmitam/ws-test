@@ -6,7 +6,10 @@ import io from 'socket.io-client'
 
 class App extends React.Component {
   
-  state={message:'adlfjsdjflsjd'}
+  state={
+    message:'adlfjsdjflsjd',
+    login: '1'
+  }
 
   constructor(props){
     super(props);
@@ -19,7 +22,7 @@ class App extends React.Component {
     this.socket.on('connect', () => {
       console.log('connect')
       this.socket.emit('hello', {
-          login: 1,
+          login: this.state.login,
           skipSendChats: true,
       });
 
@@ -31,7 +34,7 @@ class App extends React.Component {
   readChat(){
     console.log('read chat');
     this.socket.emit('read_chat', {
-      login: 1,
+      login: this.state.login,
       chatId: 1,
       role: 'admin'
     })
@@ -39,7 +42,7 @@ class App extends React.Component {
 
   addMessage(){
     this.socket.emit('add_message', {
-      login: 1,
+      login: this.state.login,
       chatId: 1,
       role: 'admin',
       text: this.state.message,
@@ -52,6 +55,10 @@ class App extends React.Component {
     return (
       <div className="App">
           <h1>Hello world</h1>
+          <div>
+            login:
+            <input type="text" onChange={e => this.setState({login:e.target.value})}  value={this.state.login}/> 
+          </div>
           <div>
             <button onClick={() => this.readChat()}>Read chat</button>
           </div>
